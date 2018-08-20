@@ -24,6 +24,29 @@ for (var i = 0; i < v_cells; i++) {
 	}
 }
 
+function GetPositionByCellIndex(cell_x, cell_y) {
+	var x, y;
+	x = (cell_x * cell_height) + (cell_x * empty_space_between_cells) - (cell_height / 2) - empty_space_between_cells;
+	y = (cell_y * cell_height) + (cell_y * empty_space_between_cells) - (cell_height / 2) - empty_space_between_cells;
+
+	return [x, y];
+}
+
+function CreateBallInCell(color, cell_x, cell_y) {
+	var position = GetPositionByCellIndex(cell_x, cell_y)
+	/*console.log(
+		position[0],
+		position[1]);*/
+	var x_pos = position[0]
+	var y_pos = position[1]
+
+	context.fillStyle = "#c82124"; //red
+	context.beginPath();
+	context.arc(x_pos, y_pos, 50, 0, Math.PI*2, true);
+	context.closePath();
+	context.fill();
+}
+
 canvas.addEventListener('click', function(event) {
     var x = event.pageX - LeftOffset,
         y = event.pageY - TopOffset;
@@ -32,7 +55,8 @@ canvas.addEventListener('click', function(event) {
     elements.forEach(function(element) {
         if (y > element.top && y < element.top + element.height &&
         	x > element.left && x < element.left + element.width) {
-            alert("you clicked element X=" + element.x + "Y=" + element.y);
+        	CreateBallInCell("blue", element.x, element.y);
+            //alert("you clicked element X=" + element.x + "Y=" + element.y);
         }
     });
 
@@ -40,7 +64,7 @@ canvas.addEventListener('click', function(event) {
 
 // Render elements.
 elements.forEach( function (element) {
-	console.log("element", element.x, element.y, element.width, element.height, element.top, element.left,)
+	/*console.log("element", element.x, element.y, element.width, element.height, element.top, element.left,)*/
     context.fillStyle = element.color;
     context.fillRect(element.left, element.top, element.width, element.height);
 });

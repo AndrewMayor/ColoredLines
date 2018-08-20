@@ -1,3 +1,13 @@
+var ColorEnum = {
+    RED : "#c82124",
+    ORANGE : '#ff9900',
+    GREEN : '#33cc00',
+    VIOLET : '#9900cc',
+    BLUE : '#3300ff',
+    PINK : '#ff00cc',
+    YELOW : '#ffff00'
+}
+
 var canvas = document.getElementById('GameCanvas'),
     LeftOffset = canvas.offsetLeft,
     TopOffset = canvas.offsetTop,
@@ -24,7 +34,8 @@ for (var i = 0; i < v_cells; i++) {
 	}
 }
 
-function GetPositionByCellIndex(cell_x, cell_y) {
+
+function GetSquareCenterPositionByCellIndex(cell_x, cell_y) {
 	var x, y;
 	x = (cell_x * cell_height) + (cell_x * empty_space_between_cells) - (cell_height / 2) - empty_space_between_cells;
 	y = (cell_y * cell_height) + (cell_y * empty_space_between_cells) - (cell_height / 2) - empty_space_between_cells;
@@ -32,17 +43,29 @@ function GetPositionByCellIndex(cell_x, cell_y) {
 	return [x, y];
 }
 
+function RemoveBall(cell_x, cell_y) {
+	var position = GetSquareCenterPositionByCellIndex(cell_x, cell_y);
+	var sqare_start_pos_x = position[0] - (cell_height / 2)
+	var sqare_start_pos_y = position[1] - (cell_height / 2)
+	context.fillStyle = "white";
+	context.fillRect(
+		sqare_start_pos_x,
+		sqare_start_pos_y,
+		cell_height,
+		cell_height);
+}
+
 function CreateBallInCell(color, cell_x, cell_y) {
-	var position = GetPositionByCellIndex(cell_x, cell_y)
+	var position = GetSquareCenterPositionByCellIndex(cell_x, cell_y)
 	/*console.log(
 		position[0],
 		position[1]);*/
 	var x_pos = position[0]
 	var y_pos = position[1]
 
-	context.fillStyle = "#c82124"; //red
+	context.fillStyle = color;
 	context.beginPath();
-	context.arc(x_pos, y_pos, 50, 0, Math.PI*2, true);
+	context.arc(x_pos, y_pos, 40, 0, Math.PI*2, true);
 	context.closePath();
 	context.fill();
 }
@@ -55,7 +78,8 @@ canvas.addEventListener('click', function(event) {
     elements.forEach(function(element) {
         if (y > element.top && y < element.top + element.height &&
         	x > element.left && x < element.left + element.width) {
-        	CreateBallInCell("blue", element.x, element.y);
+        	RemoveBall(element.x, element.y);
+        	//CreateBallInCell("blue", element.x, element.y);
             //alert("you clicked element X=" + element.x + "Y=" + element.y);
         }
     });
@@ -68,3 +92,9 @@ elements.forEach( function (element) {
     context.fillStyle = element.color;
     context.fillRect(element.left, element.top, element.width, element.height);
 });
+
+CreateBallInCell(ColorEnum.GREEN, 3, 3);
+CreateBallInCell(ColorEnum.ORANGE, 3, 5);
+CreateBallInCell(ColorEnum.VIOLET, 8, 7);
+CreateBallInCell(ColorEnum.BLUE, 9, 1);
+CreateBallInCell(ColorEnum.VIOLET, 7, 5);

@@ -18,6 +18,7 @@ var canvas = document.getElementById('GameCanvas'),
 var v_cells = 9; // MAGIC_CONST
 var cell_height = 100;
 var empty_space_between_cells = 1;
+var selected_ball_pos;
 
 
 for (var i = 0; i < v_cells; i++) {
@@ -77,9 +78,14 @@ canvas.addEventListener('click', function(event) {
 	elements.forEach(function(element) {
 		if (y > element.top && y < element.top + element.height &&
 			x > element.left && x < element.left + element.width) {
-			RemoveColorFromCell(element.x, element.y);
+			if (selected_ball_pos == null) {
+				selected_ball_pos = [element.x, element.y];
+			} else {
+				MoveBallToCell(element.x, element.y)
+			}
+			//RemoveColorFromCell(element.x, element.y);
 			//RenderBallInCell("blue", element.x, element.y);
-			AddThreeRandomColoredBallsInRandomPositions();
+			//AddThreeRandomColoredBallsInRandomPositions();
 			//alert("you clicked element X=" + element.x + "Y=" + element.y);
 		}
 	});
@@ -119,6 +125,19 @@ function StartGame() {
 	}
 
 	PrintArrayToConsole(board_states_array)
+}
+
+function MoveBallToCell(target_cell_x, target_cell_y) {
+	console.assert(selected_ball_pos != null, "Trying to move when no ball selected");
+	let color = GetColorFromCell(selected_ball_pos[0], selected_ball_pos[1]);
+	console.assert(color != 0, "Trying to move empty ball to cell");
+	SetColorBallToCell(color, target_cell_x, target_cell_y);
+	RemoveColorFromCell(selected_ball_pos[0], selected_ball_pos[1])
+	selected_ball_pos = null;
+}
+
+function GetColorFromCell(cell_x, cell_y){
+	return board_states_array[cell_x][cell_y];
 }
 
 function SetColorBallToCell(color_enum, cell_x, cell_y) {
@@ -186,5 +205,9 @@ function MakeTurn(){
 }
 
 StartGame();
+
+AddThreeRandomColoredBallsInRandomPositions();
+AddThreeRandomColoredBallsInRandomPositions();
+AddThreeRandomColoredBallsInRandomPositions();
 
 //---------------------------GameLogicEnd--------------------------------------

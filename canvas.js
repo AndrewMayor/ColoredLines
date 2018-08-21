@@ -83,10 +83,6 @@ canvas.addEventListener('click', function(event) {
 			} else {
 				MoveBallToCell(element.x, element.y)
 			}
-			//RemoveColorFromCell(element.x, element.y);
-			//RenderBallInCell("blue", element.x, element.y);
-			//AddThreeRandomColoredBallsInRandomPositions();
-			//alert("you clicked element X=" + element.x + "Y=" + element.y);
 		}
 	});
 
@@ -191,10 +187,6 @@ function AddThreeRandomColoredBallsInRandomPositions(){
 		}
 	}
 
-	console.log(random_color1);
-	console.log(random_color2);
-	console.log(random_color3);
-
 	SetColorBallToCell(random_color1, selected_positions_arr[0][0], selected_positions_arr[0][1]);
 	SetColorBallToCell(random_color2, selected_positions_arr[1][0], selected_positions_arr[1][1]);
 	SetColorBallToCell(random_color3, selected_positions_arr[2][0], selected_positions_arr[2][1]);
@@ -207,7 +199,4 @@ function MakeTurn(){
 StartGame();
 
 AddThreeRandomColoredBallsInRandomPositions();
-AddThreeRandomColoredBallsInRandomPositions();
-AddThreeRandomColoredBallsInRandomPositions();
-
 //---------------------------GameLogicEnd--------------------------------------

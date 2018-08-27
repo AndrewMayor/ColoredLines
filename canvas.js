@@ -1,13 +1,3 @@
-var ColorsArray = [
-	"#c82124", //RED
-	'#ff9900', //ORANGE
-	'#33cc00', //GREEN
-	'#9900cc', //VIOLET
-	'#3300ff', //BLUE
-	'#ff00cc', //PINK
-	'#ffff00' //YELOW
-]
-
 var canvas = document.getElementById('GameCanvas'),
 	LeftOffset = canvas.offsetLeft,
 	TopOffset = canvas.offsetTop,
@@ -16,10 +6,9 @@ var canvas = document.getElementById('GameCanvas'),
 
 
 var v_cells = 9; // MAGIC_CONST
-var cell_height = 100;
-var empty_space_between_cells = 1;
+var cell_height = 100; // MAGIC_CONST
+var empty_space_between_cells = 1; // MAGIC_CONST
 var selected_ball_pos;
-
 
 for (var i = 0; i < v_cells; i++) {
 	for (var j = 0; j < v_cells; j++) {
@@ -63,6 +52,7 @@ function RenderBallInCell(color, cell_x, cell_y) {
 	var x_pos = position[0]
 	var y_pos = position[1]
 
+	console.log(color, "fhk");
 	context.fillStyle = color;
 	context.beginPath();
 	context.arc(x_pos, y_pos, 40, 0, Math.PI*2, true);
@@ -81,7 +71,7 @@ canvas.addEventListener('click', function(event) {
 			if (selected_ball_pos == null) {
 				selected_ball_pos = [element.x, element.y];
 			} else {
-				MoveBallToCell(element.x, element.y)
+				main.MoveBallToCell(element.x, element.y)
 			}
 		}
 	});
@@ -94,109 +84,6 @@ elements.forEach( function (element) {
 	context.fillRect(element.left, element.top, element.width, element.height);
 });
 
-
-//---------------------------GameLogic--------------------------------------
-
-function PrintArrayToConsole(arr) { // help's in debug
-	var arrText='';
-	for (var i = 0; i < arr.length; i++) {
-		for (var j = 0; j < arr[i].length; j++) {
-			arrText+=arr[i][j]+' ';
-		}
-		console.log(arrText);
-		arrText='';
-	}
-}
-
-var board_states_array
-function StartGame() {
-	 board_states_array = new Array(v_cells - 1);
-	for (var i = 0; i < v_cells; i++) {
-	  board_states_array[i] = new Array(v_cells - 1);
-	}
-	for (var i = 0; i < v_cells; i++) {
-		for (var j = 0; j < v_cells; j++) {
-			board_states_array[i][j] = 0; // initital empty board values are 0
-		}
-	}
-
-	PrintArrayToConsole(board_states_array)
-}
-
-function MoveBallToCell(target_cell_x, target_cell_y) {
-	console.assert(selected_ball_pos != null, "Trying to move when no ball selected");
-	let color = GetColorFromCell(selected_ball_pos[0], selected_ball_pos[1]);
-	console.assert(color != 0, "Trying to move empty ball to cell");
-	SetColorBallToCell(color, target_cell_x, target_cell_y);
-	RemoveColorFromCell(selected_ball_pos[0], selected_ball_pos[1])
-	selected_ball_pos = null;
-}
-
-function GetColorFromCell(cell_x, cell_y){
-	return board_states_array[cell_x][cell_y];
-}
-
-function SetColorBallToCell(color_enum, cell_x, cell_y) {
-	console.assert(board_states_array[cell_x][cell_y] == 0, "Can only set color to empty cell"); // Can only set color to empty cell
-	board_states_array[cell_x][cell_y] = color_enum;
-	RenderBallInCell(color_enum, cell_x, cell_y);
-}
-
-function RemoveColorFromCell(cell_x, cell_y) {
-	console.assert(board_states_array[cell_x][cell_y] != 0, "Can only remove ocupied cell"); // Can only remove ocupied cell
-	board_states_array[cell_x][cell_y] = 0;
-	DeRenderBallFromCell(cell_x, cell_y);
-}
-
-function AddThreeRandomColoredBallsInRandomPositions(){
-	let random_color1 = ColorsArray[Math.floor(Math.random() * ColorsArray.length)];
-	let random_color2 = ColorsArray[Math.floor(Math.random() * ColorsArray.length)];
-	let random_color3 = ColorsArray[Math.floor(Math.random() * ColorsArray.length)];
-	let all_empty_cells_array = [];
-	for (var i = 0; i < v_cells; i++) {
-		for (var j = 0; j < v_cells; j++) {
-			if (board_states_array[i][j] == 0) {
-				let arr = [i, j]; // todo use object insted of array
-				all_empty_cells_array.push(arr);
-			}
-		}
-	}
-
-	let selected_positions_arr = [];
-
-	function GetRandomEmptyCell(){
-		let random_index = Math.floor(Math.random() * all_empty_cells_array.length);
-		let random_position = all_empty_cells_array[random_index];
-		if (random_position == null){
-			return GetRandomEmptyCell();
-		}else{
-			all_empty_cells_array[random_index] = null;
-			console.log("empty");
-			console.log(random_position[0], random_position[1]);
-			console.log("empty");
-			return random_position
-		}
-
-	}
-
-	if (all_empty_cells_array.length < 4){
-		console.log("Insert losing logic here");
-	} else {
-		for (var i = 0; i < 3; i++) {
-			selected_positions_arr.push(GetRandomEmptyCell());
-		}
-	}
-
-	SetColorBallToCell(random_color1, selected_positions_arr[0][0], selected_positions_arr[0][1]);
-	SetColorBallToCell(random_color2, selected_positions_arr[1][0], selected_positions_arr[1][1]);
-	SetColorBallToCell(random_color3, selected_positions_arr[2][0], selected_positions_arr[2][1]);
-}
-
-function MakeTurn(){
-
-}
-
-StartGame();
-
-AddThreeRandomColoredBallsInRandomPositions();
-//---------------------------GameLogicEnd--------------------------------------
+let main = new Main();
+main.StartGame();
+main.AddThreeRandomColoredBallsInRandomPositions();

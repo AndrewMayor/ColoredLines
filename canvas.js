@@ -4,7 +4,6 @@ var canvas = document.getElementById('GameCanvas'),
 	context = canvas.getContext('2d'),
 	elements = [];
 
-
 var v_cells = 9; // MAGIC_CONST
 var cell_height = 100; // MAGIC_CONST
 var empty_space_between_cells = 1; // MAGIC_CONST
@@ -23,7 +22,6 @@ for (var i = 0; i < v_cells; i++) {
 		});
 	}
 }
-
 
 function GetSquareCenterPositionByCellIndex(cell_x, cell_y) {
 	var x, y;
@@ -52,7 +50,6 @@ function RenderBallInCell(color, cell_x, cell_y) {
 	var x_pos = position[0]
 	var y_pos = position[1]
 
-	console.log(color, "fhk");
 	context.fillStyle = color;
 	context.beginPath();
 	context.arc(x_pos, y_pos, 40, 0, Math.PI*2, true);
@@ -87,3 +84,5 @@ elements.forEach( function (element) {
 let main = new Main();
 main.StartGame();
 main.AddThreeRandomColoredBallsInRandomPositions();
+
+let pf = new PathFinding();

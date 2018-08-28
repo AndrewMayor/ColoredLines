@@ -1,7 +1,7 @@
 class Main {
-
 	constructor(canvas) {
 		this.canvas = canvas;
+		this.v_cells = 9;
 		this.ColorsArray = [
 			"#c82124", //RED
 			'#ff9900', //ORANGE
@@ -25,7 +25,6 @@ class Main {
 	}
 
 	StartGame() {
-		this.v_cells = 9;
 		this.board_states_array = new Array(this.v_cells - 1);
 		for (var i = 0; i < this.v_cells; i++) {
 		  this.board_states_array[i] = new Array(this.v_cells - 1);
@@ -87,16 +86,14 @@ class Main {
 				return GetRandomEmptyCell();
 			}else{
 				all_empty_cells_array[random_index] = null;
-				console.log("empty");
 				console.log(random_position[0], random_position[1]);
-				console.log("empty");
 				return random_position
 			}
 
 		}
 
 		if (all_empty_cells_array.length < 4) {
-			console.log("Insert losing logic here");
+			console.log("Insert losing logic here"); // todo
 		} else {
 			for (var i = 0; i < 3; i++) {
 				selected_positions_arr.push(GetRandomEmptyCell());
